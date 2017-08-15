@@ -1,6 +1,6 @@
 include(utils.m4)dnl Include utility macros
 dnl
-pushdef(`SUBDIRS',``subdirs = {"base", "turrispackages", "lucics", "packages", "routing", "management", "telephony", "printing"}'')dnl
+pushdef(`SUBDIRS',``subdirs = {"base", "turrispackages", "php", "hardware", "lucics", "packages", "routing", "management", "telephony", "printing"}'')dnl
 dnl
 -- The basic repository
 Repository("turris", "https://api.turris.cz/openwrt-repo/_BOARD_`'ifdef(`_BRANCH_',-_BRANCH_)/packages", {
@@ -23,8 +23,8 @@ end
 Package('updater-ng', { replan = replan_str('immediate', true) })
 Package('l10n_supported', { replan = replan_str('finished', true) })
 Package('nuci', { replan = replan_str('finished', false) })
--- Updater won't remove package before replanning so add dependency on empty opkg-trans package if we have installed version with those files (variable installed is broken in Updater 30 so we check features variable too)
-if not features or installed['opkg-trans'] and tonumber(string.match(installed['opkg-trans'].version, '%d*')) < 59 then
+-- Updater won't remove package before replanning so add dependency on empty opkg-trans package if we have installed version with those files (We would like to use version_match but this condition has the same effect because version_match was defined later than packages were merged.)
+if not version_match then
 	Package('updater-ng', { deps = 'opkg-trans' })
 end
 
@@ -63,6 +63,7 @@ Install("ip", "iptables", "ip6tables")
 Install("shadow", "shadow-utils", "uboot-envtools", "i2c-tools")
 Install("openssh-client", "openssh-client-utils", "openssh-moduli", "openssh-server", "openssh-sftp-client", "openssh-sftp-server", "openssl-util")
 Install("bind-client", "bind-dig")
+Install("pciutils", "usbutils", "lsof")
 
 -- Turris utility
 Install("user_notify", "oneshot", "libatsha204", "sfpswitch", ifelse(_BOARD_,omnia,"rainbow-omnia","rainbow"), "watchdog_adjust", "daemon-watchdog", "update_mac", "switch-branch")
