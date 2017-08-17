@@ -304,3 +304,6 @@ CONFIG_PACKAGE_transmission-remote-polarssl=n
 # Some weird requests
 CONFIG_BUSYBOX_CONFIG_EJECT=y
 CONFIG_BUSYBOX_CONFIG_FEATURE_EJECT_SCSI=y
+
+CONFIG_PACKAGE_tvheadend=m
+CONFIG_PACKAGE_suricata-monitor=m
